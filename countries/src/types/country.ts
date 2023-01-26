@@ -1,8 +1,7 @@
-type Country = {
-	name: {
-		common: string;
-		nativeName: string[];
-	};
+export type Country = {
+	name: string;
+	nativeName: string;
+	code: string;
 	region: string;
 	subregion: string;
 	population: number;
@@ -14,4 +13,17 @@ type Country = {
 	flagUrl: string;
 };
 
-export default Country;
+export type CountryAPI = {
+	name: string;
+	nativeName: string;
+	alpha3Code: string;
+	capital: string;
+	region: string;
+	subregion: string;
+	population: number;
+	borders: string[];
+	topLevelDomain: string[];
+	currencies: { name: string }[];
+	languages: { name: string }[];
+	flag: string;
+};
