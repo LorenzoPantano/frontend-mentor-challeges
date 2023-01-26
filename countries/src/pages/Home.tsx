@@ -3,7 +3,8 @@ import { useThemeSwitcher } from "../hooks/useThemeSwitcher";
 import { useQuery } from "@tanstack/react-query";
 import { getAll } from "../api/functions";
 import { Country } from "../types/country";
-import { CircularProgress, Container } from "@mui/material";
+import { CircularProgress, Container, Grid } from "@mui/material";
+import CountryCard from "../components/CountryCard";
 
 const Home = () => {
 	const { data, isError, isLoading } = useQuery(["all"], getAll);
@@ -20,7 +21,18 @@ const Home = () => {
 		return <div>Error</div>;
 	}
 
-	return <div>{data && data.map((item: Country) => <div key={item.code}>{item.name}</div>)}</div>;
+	return (
+		<Grid container spacing={8}>
+			{data &&
+				data.map((item: Country) => {
+					return (
+						<Grid item xs={12} sm={4} md={3}>
+							<CountryCard key={item.code} country={item} />
+						</Grid>
+					);
+				})}
+		</Grid>
+	);
 };
 
 export default Home;
