@@ -20,6 +20,9 @@ const ThemeSwitcher = ({ children }: ThemeSwitcherProps) => {
 	const theme = useMemo(() => {
 		return createTheme({
 			palette: themeMode === "light" ? lightThemePalette : darkModePalette,
+			typography: {
+				fontFamily: "Nunito Sans",
+			},
 		});
 	}, [themeMode]);
 
