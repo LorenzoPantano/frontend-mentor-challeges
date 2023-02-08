@@ -27,3 +27,11 @@ export type CountryAPI = {
 	languages: { name: string }[];
 	flag: string;
 };
+
+export enum Region {
+	AFRICA = "Africa",
+	AMERICAS = "Americas",
+	ASIA = "Asia",
+	EUROPE = "Europe",
+	OCEANIA = "Oceania",
+}

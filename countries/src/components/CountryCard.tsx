@@ -10,8 +10,8 @@ const CountryCard = ({ country }: CountryCardProps) => {
 	return (
 		<Card>
 			<CardActionArea>
-				<CardMedia component="svg" image={country.flagUrl} />
-				<CardContent>
+				<CardMedia component="svg" image={country.flagUrl} style={{ aspectRatio: "16/9" }} />
+				<CardContent style={{ padding: "1.5rem" }}>
 					<Typography fontSize={18} fontWeight={800} marginBottom={2}>
 						{country.name}
 					</Typography>

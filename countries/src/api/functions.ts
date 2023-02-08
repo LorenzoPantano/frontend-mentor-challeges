@@ -1,5 +1,4 @@
 import { CountryAPI, Country } from "../types/country";
-import { getValuesFromObject } from "../utils/helper";
 import ENDPOINTS from "./config";
 
 async function getAll() {
@@ -8,25 +7,20 @@ async function getAll() {
 
 	const countries: Country[] = await Promise.all(
 		data.map(async (countryAPI: CountryAPI) => {
-			let borderNames: string[] = [];
-			if (countryAPI.borders) {
-				borderNames = await Promise.all(
-					countryAPI.borders.map(async (borderCode: string) => {
-						return getCountryNameByCode(borderCode);
-					})
-				);
-			}
-
 			const country: Country = {
 				name: countryAPI.name,
 				nativeName: countryAPI.nativeName,
-				borderCountries: borderNames,
+				borderCountries: countryAPI.borders ? countryAPI.borders : [],
 				capital: countryAPI.capital,
 				code: countryAPI.alpha3Code,
-				currencies: countryAPI.currencies ? countryAPI.currencies.map((curr: { name: string }) => curr.name) : [],
+				currencies: countryAPI.currencies
+					? countryAPI.currencies.map((curr: { name: string }) => curr.name)
+					: [],
 				flagUrl: countryAPI.flag,
 				population: countryAPI.population,
-				languages: countryAPI.languages ? countryAPI.languages.map((lang: { name: string }) => lang.name) : [],
+				languages: countryAPI.languages
+					? countryAPI.languages.map((lang: { name: string }) => lang.name)
+					: [],
 				region: countryAPI.region,
 				subregion: countryAPI.subregion,
 				topLevelDomain: countryAPI.topLevelDomain[0],
@@ -39,6 +33,16 @@ async function getAll() {
 	return countries;
 }
 
+async function getCountryBordersName(borders: string[]): Promise<string[]> {
+	const bordersName = await Promise.all(
+		borders.map(async (border: string) => {
+			const res = await getCountryNameByCode(border);
+			return res;
+		})
+	);
+	return bordersName;
+}
+
 async function getCountryNameByCode(code: string): Promise<string> {
 	const res = await fetch(ENDPOINTS.code + code + "/?fields=name", { method: "GET" });
 	const data = await res.json();
@@ -46,4 +50,4 @@ async function getCountryNameByCode(code: string): Promise<string> {
 	return data.name;
 }
 
-export { getAll, getCountryNameByCode };
+export { getAll, getCountryNameByCode, getCountryBordersName };

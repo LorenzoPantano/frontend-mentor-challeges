@@ -10,7 +10,7 @@ const Page = ({ children }: PageProps) => {
 	return (
 		<>
 			<Header />
-			<Container maxWidth="lg">{children}</Container>
+			<Container maxWidth="xl">{children}</Container>
 		</>
 	);
 };
