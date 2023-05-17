@@ -9,6 +9,7 @@ import {
 	useTheme,
 } from "@mui/material";
 import React from "react";
+import { Country, Region } from "../types/country";
 
 type CountriesAutocompleteProps = {
 	options: string[];
@@ -17,6 +18,8 @@ type CountriesAutocompleteProps = {
 	id?: string;
 	paddingOptions?: string;
 	freeSolo?: boolean;
+	value: string;
+	setValue: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const autocompleteSxProps: SxProps = {
@@ -42,6 +45,8 @@ const CountriesAutocomplete = ({
 	id,
 	paddingOptions = "1rem 1.5rem",
 	freeSolo = false,
+	value,
+	setValue: setText,
 }: CountriesAutocompleteProps) => {
 	const theme = useTheme();
 
@@ -75,6 +80,10 @@ const CountriesAutocomplete = ({
 			style={{
 				backgroundColor: theme.palette.background.paper,
 				borderRadius: "0.5rem",
+			}}
+			value={value}
+			onChange={(_event, newValue) => {
+				return setText(newValue || "");
 			}}
 		/>
 	);

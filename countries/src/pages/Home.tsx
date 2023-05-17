@@ -1,14 +1,16 @@
-import React from "react";
-import { useThemeSwitcher } from "../hooks/useThemeSwitcher";
 import { useQuery } from "@tanstack/react-query";
 import { getAll } from "../api/functions";
 import { Country } from "../types/country";
-import { CircularProgress, Container, Grid, Stack } from "@mui/material";
+import { CircularProgress, Grid, Stack } from "@mui/material";
 import CountryCard from "../components/CountryCard";
 import SearchBar from "../components/SearchBar";
+import { useCountries } from "../hooks/useCountries";
+import { useCallback, useState } from "react";
 
 const Home = () => {
-	const { data, isError, isLoading } = useQuery(["all"], getAll);
+	const { isLoading, isError, data } = useCountries();
+	const [searchBarText, setSearchBarText] = useState("");
+	const [regionFilter, setRegionFilter] = useState("");
 
 	if (isLoading) {
 		return (
@@ -24,15 +26,24 @@ const Home = () => {
 
 	return (
 		<Stack gap={8} marginTop={8}>
-			<SearchBar options={data} />
+			<SearchBar
+				options={data!}
+				searchText={searchBarText}
+				setSearchText={setSearchBarText}
+				regionText={regionFilter}
+				setRegionText={setRegionFilter}
+			/>
 			<Grid container spacing={8}>
-				{data.map((item: Country) => {
-					return (
-						<Grid item xs={12} sm={4} md={3}>
-							<CountryCard key={item.code} country={item} />
-						</Grid>
-					);
-				})}
+				{data!
+					.filter((item: Country) => item.region.includes(regionFilter))
+					.filter((item: Country) => item.name.toLowerCase().includes(searchBarText.toLowerCase()))
+					.map((item: Country) => {
+						return (
+							<Grid item xs={12} sm={4} md={3}>
+								<CountryCard key={item.code} country={item} />
+							</Grid>
+						);
+					})}
 			</Grid>
 		</Stack>
 	);
